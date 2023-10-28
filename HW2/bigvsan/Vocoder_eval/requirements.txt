@@ -1,0 +1,7 @@
+auraloss==0.4.0
+librosa==0.10.1
+torchaudio==2.0.2
+tqdm
+crepe==0.0.14
+tensorflow==2.8
+protobuf==3.19.0

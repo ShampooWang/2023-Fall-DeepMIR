@@ -1,0 +1,14 @@
+#dataset
+HW2/dataset
+HW1/artist20
+
+#tools
+tmp-tools/
+
+#Checkpoints
+HW2/exp
+HW1/exp
+
+#logs
+HW2/logs
+HW1/logs

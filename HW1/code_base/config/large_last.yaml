@@ -1,0 +1,31 @@
+data:
+  dataset_root: "/work/jgtf0322/Homework/2023-Fall-DLMAG/HW1_singer_classification/artist20"
+  train_batch_size: 24
+  dev_batch_size: 24
+
+audio_encoder:
+  model_type: MERT-v1-330M # MERT-v1-95M
+  feat_select_idx: last #last
+
+optimizer:
+  name: Adam
+  args:
+    lr: 1.e-4
+    weight_decay: 1.e-6
+
+trainer:
+  accelerator: "gpu"
+  max_steps: 200000
+  gradient_clip_val: 5
+  accumulate_grad_batches: 1
+  check_val_every_n_epoch: 1
+  precision: 16
+  logger: wandb
+  log_every_n_steps: 1
+  # fast_dev_run: 2
+  # strategy: dp
+  # limit_train_batches: 8
+  # limit_val_batches: 8
+
+logger:
+  project: 2023-DLMAG-HW1
