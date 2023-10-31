@@ -12,3 +12,16 @@ HW1/exp
 #logs
 HW2/logs
 HW1/logs
+
+#inference results
+HW2/inference_result
+
+#cache
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/generated_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/groundtruth_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/bigvsan/generated_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/bigvsan/groundtruth_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/bigvgan/generated_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/bigvgan/groundtruth_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/ddsp-singing-vocoders/generated_fad_feature_cache.npy
+/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/ddsp-singing-vocoders/groundtruth_fad_feature_cache.npy

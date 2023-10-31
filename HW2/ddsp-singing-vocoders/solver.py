@@ -14,6 +14,7 @@ from tqdm import tqdm
 from vocoder_eval.evaluate import evaluate
 import subprocess
 import wandb
+from debuzz import debuzz_waves
 
 
 def render(args, model, path_mel_dir, path_gendir='gen', is_part=False):
@@ -69,7 +70,7 @@ def render(args, model, path_mel_dir, path_gendir='gen', is_part=False):
                 sf.write(path_pred_h, pred_h, args.data.sampling_rate)
 
 
-def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=False):
+def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=True):
     print(' [*] testing...')
     print(' [*] output folder:', path_gendir)
     model.eval()
@@ -89,8 +90,8 @@ def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=False):
     with torch.no_grad():
         for bidx, data in enumerate(tqdm(loader_test)):
             fn = data['name'][0]
-            print('--------')
-            print('{}/{} - {}'.format(bidx, num_batches, fn))
+            # print('--------')
+            # print('{}/{} - {}'.format(bidx, num_batches, fn))
 
             # unpack data
             for k in data.keys():
@@ -112,7 +113,7 @@ def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=False):
             run_time = ed_time - st_time
             song_time = data['audio'].shape[-1] / args.data.sampling_rate
             rtf = run_time / song_time
-            print('RTF: {}  | {} / {}'.format(rtf, run_time, song_time))
+            # print('RTF: {}  | {} / {}'.format(rtf, run_time, song_time))
             rtf_all.append(rtf)
            
             # loss
@@ -124,11 +125,11 @@ def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=False):
             test_loss_f0      += loss_f0.item()
 
             # path
-            path_pred = os.path.join(path_gendir, 'pred', fn + '.wav')
-            path_anno = os.path.join(path_gendir, 'anno', fn + '.wav')
+            path_pred = os.path.join(path_gendir, 'pred', f"{bidx}.wav")
+            path_anno = os.path.join(path_gendir, 'anno', f"{bidx}.wav")
             if is_part:
-                path_pred_n = os.path.join(path_gendir, 'part', fn + '-noise.wav')
-                path_pred_h = os.path.join(path_gendir, 'part', fn + '-harmonic.wav')
+                path_pred_n = os.path.join(path_gendir, 'part', f"{bidx}-noise.wav")
+                path_pred_h = os.path.join(path_gendir, 'part', f"{bidx}-harmonic.wav")
 
             # print(' > path_pred:', path_pred)
             # print(' > path_anno:', path_anno)
@@ -154,6 +155,12 @@ def test(args, model, loss_func, loader_test, path_gendir='gen', is_part=False):
 
             anno_path_list.append(path_anno)
             pred_path_list.append(path_pred)
+    
+    if is_part:
+        debuzz_waves(path_gendir)
+
+    result = evaluate(os.path.join(path_gendir, 'anno'), os.path.join(path_gendir, 'pred'))
+    print(result)
 
     # report
     test_loss /= num_batches

@@ -9,11 +9,11 @@ import librosa
 from tqdm import tqdm
 import soundfile as sf
 from functools import partial
-from Vocoder_eval.evaluate import evaluate
+from vocoder_eval.evaluate import evaluate
 
 def parseArgs(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--valid_data_root', default="/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/dataset/train", type=str)
+    parser.add_argument('--valid_data_root', default="/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/dataset/valid", type=str)
     parser.add_argument('--output_dir', default="/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/dataset/gl_pred", type=str)
 
     return parser.parse_args(argv)

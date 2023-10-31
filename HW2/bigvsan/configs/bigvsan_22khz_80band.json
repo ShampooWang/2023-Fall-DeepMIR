@@ -1,12 +1,12 @@
 {
     "resblock": "1",
     "num_gpus": 0,
-    "batch_size": 32,
+    "batch_size": 16,
     "learning_rate": 0.0001,
     "adam_b1": 0.8,
     "adam_b2": 0.99,
     "lr_decay": 0.999,
-    "seed": 1234,
+    "seed": 322,
 
     "upsample_rates": [4,4,2,2,2,2],
     "upsample_kernel_sizes": [8,8,4,4,4,4],

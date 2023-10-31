@@ -182,7 +182,7 @@ def train(rank, a, h):
 
             # loop over validation set and compute metrics
             save_path_list, input_path_list = [], []
-            for j, batch in enumerate(tqdm(loader)):
+            for j, batch in enumerate(tqdm(loader, total=len(loader))):
                 x, y, input_path, y_mel = batch
                 y = y.to(device)
                 if hasattr(generator, 'module'):
@@ -212,7 +212,7 @@ def train(rank, a, h):
                         save_path = os.path.join(a.checkpoint_path, 'samples', '{:04d}.wav'.format(j))
                         save_path_list.append(save_path)
                         input_path_list += input_path
-                        save_audio(y_g_hat[0, 0], save_path, h.sampling_rate)
+                        save_audio(y_g_hat.squeeze(), save_path, h.sampling_rate)
 
                     # spectrogram of synthesized audio
                     y_hat_spec = mel_spectrogram(y_g_hat.squeeze(1), h.n_fft, h.num_mels,

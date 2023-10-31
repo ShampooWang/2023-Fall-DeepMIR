@@ -76,5 +76,5 @@ def scan_checkpoint(cp_dir, prefix):
 def save_audio(audio, path, sr):
     # wav: torch with 1d shape
     audio = audio * MAX_WAV_VALUE
-    audio = audio.cpu().numpy()
+    audio = audio.cpu().numpy().astype('int16')
     write(path, sr, audio)

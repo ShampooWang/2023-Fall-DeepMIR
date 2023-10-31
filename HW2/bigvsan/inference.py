@@ -10,14 +10,17 @@ import json
 import torch
 from scipy.io.wavfile import write
 from env import AttrDict
-from meldataset import mel_spectrogram, MAX_WAV_VALUE
-from models import BigVSAN as Generator
+from meldataset import mel_spectrogram, MAX_WAV_VALUE, spectral_normalize_torch
+from models import BigVSAN as bigVSANGenerator
+from pathlib import Path
+import numpy as np
+from tqdm import tqdm
+from Vocoder_eval.evaluate import evaluate
 import librosa
 
 h = None
 device = None
 torch.backends.cudnn.benchmark = False
-
 
 def load_checkpoint(filepath, device):
     assert os.path.isfile(filepath)
@@ -30,7 +33,6 @@ def load_checkpoint(filepath, device):
 def get_mel(x):
     return mel_spectrogram(x, h.n_fft, h.num_mels, h.sampling_rate, h.hop_size, h.win_size, h.fmin, h.fmax)
 
-
 def scan_checkpoint(cp_dir, prefix):
     pattern = os.path.join(cp_dir, prefix + '*')
     cp_list = glob.glob(pattern)
@@ -40,21 +42,22 @@ def scan_checkpoint(cp_dir, prefix):
 
 
 def inference(a, h):
-    generator = Generator(h).to(device)
+    generator = bigVSANGenerator(h).to(device)
 
     state_dict_g = load_checkpoint(a.checkpoint_file, device)
     generator.load_state_dict(state_dict_g['generator'])
 
-    filelist = os.listdir(a.input_wavs_dir)
+    filelist = [ str(f) for f in Path(a.input_dir).glob('**/*.wav') ]
 
     os.makedirs(a.output_dir, exist_ok=True)
 
     generator.eval()
     generator.remove_weight_norm()
+    input_file_list, output_file_list = [], []
     with torch.no_grad():
-        for i, filname in enumerate(filelist):
+        for i, filname in enumerate(tqdm(filelist)):
             # load the ground truth audio and resample if necessary
-            wav, sr = librosa.load(os.path.join(a.input_wavs_dir, filname), h.sampling_rate, mono=True)
+            wav, sr = librosa.load(filname, sr=h.sampling_rate, mono=True)
             wav = torch.FloatTensor(wav).to(device)
             # compute mel spectrogram from the ground truth audio
             x = get_mel(wav.unsqueeze(0))
@@ -65,22 +68,28 @@ def inference(a, h):
             audio = audio * MAX_WAV_VALUE
             audio = audio.cpu().numpy().astype('int16')
 
-            output_file = os.path.join(a.output_dir, os.path.splitext(filname)[0] + '_generated.wav')
+            output_file = os.path.join(a.output_dir, f"{i}.wav")
             write(output_file, h.sampling_rate, audio)
-            print(output_file)
+            input_file_list.append(filname)
+            output_file_list.append(output_file)
+
+    RESULT = evaluate(input_file_list, output_file_list)
+    print(RESULT)
 
 
 def main():
     print('Initializing Inference Process..')
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input_wavs_dir', default='test_files')
+    parser.add_argument('--input_dir', default='/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/dataset/small_valid')
     parser.add_argument('--output_dir', default='generated_files')
     parser.add_argument('--checkpoint_file', required=True)
 
     a = parser.parse_args()
 
-    config_file = os.path.join(os.path.split(a.checkpoint_file)[0], 'config.json')
+    assert "g_ep" in a.checkpoint_file, a.checkpoint_file
+
+    config_file = os.path.join(a.checkpoint_file.split("g_ep")[0], 'config.json')
     with open(config_file) as f:
         data = f.read()
 
@@ -101,4 +110,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
