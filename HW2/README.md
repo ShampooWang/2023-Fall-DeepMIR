@@ -15,7 +15,7 @@ pip isntall -r requirements.txt
 ## 1. Inference by the provided bigvgan model
 
 ```bash
-cd HW2/bigvgan
+cd bigvgan
 
 python inference_e2e.py \
 	--test_dir /path/to/your/input/dir \
@@ -25,7 +25,7 @@ python inference_e2e.py \
 ## 2. Train the bigvgan model
 
 ```bash
-cd HW2/bigvgan
+cd bigvgan
 
 python train.py \
     --config ./configs/bigvgan_22khz_80band.json \

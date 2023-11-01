@@ -78,13 +78,15 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--test_dir', default='/work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/dataset/test')
     parser.add_argument('--output_dir', default='generated_files')
-    parser.add_argument('--checkpoint_file', default="../exp/bigvgan_pretrained_spec_norm/g_ep40", required=True)
+    parser.add_argument('--checkpoint_file', default="../exp/bigvgan_pretrained_spec_norm/best")
 
     a = parser.parse_args()
 
-    assert "g_ep" in a.checkpoint_file, a.checkpoint_file
+    if "g_ep" in a.checkpoint_file:
+        config_file = os.path.join(a.checkpoint_file.split("g_ep")[0], 'config.json')
+    else:
+        config_file = os.path.join(a.checkpoint_file.split("best")[0], 'config.json')
 
-    config_file = os.path.join(a.checkpoint_file.split("g_ep")[0], 'config.json')
     with open(config_file) as f:
         data = f.read()
 
