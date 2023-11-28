@@ -1,0 +1,8 @@
+ftfy
+black
+isort==5.9.3
+pytest
+pytorch_lightning==1.8.6
+omegaconf==2.1.1
+wandb
+transformers

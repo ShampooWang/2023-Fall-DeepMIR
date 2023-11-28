@@ -1,4 +1,5 @@
 #dataset
+HW3/dataset
 HW2/dataset
 HW1/artist20
 
@@ -6,10 +7,13 @@ HW1/artist20
 tmp-tools/
 
 #Checkpoints
+HW3/exp
 HW2/exp
 HW1/exp
+old_exp/
 
 #logs
+HW3/logs
 HW2/logs
 HW1/logs
 
@@ -25,3 +29,8 @@ HW2/inference_result
 /work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/bigvgan/groundtruth_fad_feature_cache.npy
 /work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/ddsp-singing-vocoders/generated_fad_feature_cache.npy
 /work/jgtf0322/Homework/2023-Fall-DLMAG/HW2/ddsp-singing-vocoders/groundtruth_fad_feature_cache.npy
+
+# Others
+HW3/pop1k7.csv
+HW3/train_score.csv
+HW3/generated_samples

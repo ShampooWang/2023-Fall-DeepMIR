@@ -1,4 +1,4 @@
-# 2023 Fall Deep Learning for Music Analysis and Generation HW2: GAN-based Mel-Vocoder
+# 2023 Fall DeepMIR HW2: GAN-based Mel-Vocoder
 
 ## 0. Install packages
 

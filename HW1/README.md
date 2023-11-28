@@ -1,4 +1,4 @@
-# 2023 Fall Deep Learning for Music Analysis and Generation HW1: Singer classification
+# 2023 Fall DeepMIR HW1: Singer classification
 
 ## Install requirements
 

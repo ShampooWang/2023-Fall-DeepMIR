@@ -1,0 +1,56 @@
+data:
+  x_len: 1024
+  midi_root: "/work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3/dataset/midi_analyzed"
+  dict_path: "/work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3/dataset/basic_event_dictionary.pkl"
+  words_path: "/work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3/dataset/basic_words"
+  train_batch_size: 4
+  dev_batch_size: 1
+
+transformer_model:
+  # model_name: facebook/musicgen-small # MERT-v1-95M
+  config:
+    vocab_size: 252
+    n_positions: 1024
+    n_embd: 1024
+    n_layer: 24
+    n_head: 16
+    pad_token_id: 249
+    bos_token_id: 250
+    eos_token_id: 251
+
+generation:
+  max_length: 1024
+  num_beams: 1
+  do_sample: true
+  top_p: 0.95
+  temperature: 0.95
+  pad_token_id: 249
+  bos_token_id: 250
+  eos_token_id: 251
+
+optimizer:
+  name: Adam
+  args:
+    lr: 1.e-4
+    weight_decay: 1.e-6
+
+scheduler:
+  name: linear_warmup_decay
+  warmup: 0.1
+  final_lr: 1.e-8
+
+trainer:
+  accelerator: "gpu"
+  max_steps: 100000
+  gradient_clip_val: 5
+  accumulate_grad_batches: 4
+  check_val_every_n_epoch: 1
+  precision: 16
+  logger: wandb
+  log_every_n_steps: 1
+  # fast_dev_run: 2
+  # strategy: dp
+  # limit_train_batches: 4
+
+logger:
+  project: 2023-DeepMIR-HW3
