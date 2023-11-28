@@ -15,7 +15,6 @@ pip isntall -r requirements.txt
 
 ```bash
 python generate.py \
-	--ckpt /path/to/the/provided/checkpoint \
     --output_dir /path/to/your/target/dir
 ```
 

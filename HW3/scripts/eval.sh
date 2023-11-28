@@ -12,4 +12,4 @@
 cd /work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3
 
 python code_base/util/eval_metrics.py \
-    --output_file_path "/work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3/generated_samples/llama/greedy/midi"
+    --output_file_path "/work/jgtf0322/Homework/2023-Fall-DeepMIR/HW3/generated_samples/llama/topp095_temp095/midi"
